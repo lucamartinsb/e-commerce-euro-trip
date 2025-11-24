@@ -1,0 +1,19 @@
+{
+  "name": "e-commerce-api",
+  "version": "1.0.0",
+  "description": "RESTful API for E-commerce platform using Node.js and TypeScript",
+  "keywords": [
+    "typescript",
+    "nodejs",
+    "express",
+    "api",
+    "ecommerce"
+  ],
+  "license": "ISC",
+  "author": "lucamartinsb",
+  "type": "commonjs",
+  "main": "dist/server.js",
+  "scripts": {
+    "test": "jest"
+  }
+}
