@@ -2,6 +2,7 @@ import express, { type Request, type Response } from 'express'; // Importa o fra
 import cors from 'cors'; // Importa o middleware CORS para habilitar o compartilhamento de recursos entre origens diferentes.
 import helmet from 'helmet'; // Importa o middleware Helmet para melhorar a segurança HTTP.
 import dotenv from 'dotenv'; // Importa o módulo dotenv para variáveis de ambiente.
+import { connectToDatabase } from './config/database.js'; // Importa a função para conectar ao banco de dados.
 
 dotenv.config(); // Carrega as variáveis de ambiente do arquivo .env
 
@@ -12,13 +13,18 @@ app.use(express.json()); // Habilita o parsing de JSON no corpo das requisiçõe
 
 const PORT = process.env.PORT || 30000; // Define a porta do servidor a partir da variável de ambiente ou usa 30000 como padrão.
 
-app.listen(PORT, () => { // Inicia o servidor na porta definida. Mantém o servidor ouvindo requisições na porta especificada.
-console.log(`Server is running on http://localhost:${PORT}`);
-});
+connectToDatabase() // Conecta ao banco de dados antes de iniciar o servidor.
 
 // Rota inicial para verificar se o servidor está funcionando:
 app.get('/', (req: Request, res: Response) => {
-    res.send('E-commerce Euro Trip Backend is running!');
+    res.status(200).send('E-commerce Euro Trip Backend is running!');
 });
 
+
+/*  Inicia o servidor e escuta na porta definida: 
+    - Deve ser colocado após a conexão com o banco de dados, middlewares e rotas, para garantir que o servidor só inicie se
+    a conexão for bem-sucedida e tudo estiver configurado corretamente. */
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT} <- ctrl + click to open in browser!`);
+});
 
