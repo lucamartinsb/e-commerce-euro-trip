@@ -1,8 +1,9 @@
-import express, { type Request, type Response } from 'express'; // Importa o framework Express para criar o servidor web.
+import express, { type Request, type Response } from 'express'; // Importa o framework Express e os tipos Request e Response.
 import cors from 'cors'; // Importa o middleware CORS para habilitar o compartilhamento de recursos entre origens diferentes.
 import helmet from 'helmet'; // Importa o middleware Helmet para melhorar a segurança HTTP.
 import dotenv from 'dotenv'; // Importa o módulo dotenv para variáveis de ambiente.
 import { connectToDatabase } from './config/database.js'; // Importa a função para conectar ao banco de dados.
+import productRoutes from './routes/product.routes.js'; // Importa as rotas de produtos.
 
 dotenv.config(); // Carrega as variáveis de ambiente do arquivo .env
 
@@ -17,13 +18,16 @@ connectToDatabase() // Conecta ao banco de dados antes de iniciar o servidor.
 
 // Rota inicial para verificar se o servidor está funcionando:
 app.get('/', (req: Request, res: Response) => {
-    res.status(200).send('E-commerce Euro Trip Backend is running!');
+    res.status(200).send({ message: 'Welcome to the E-Commerce Euro Trip!' }); // Retorna uma mensagem de boas-vindas com status 200.
 });
 
+app.use('/api/v1/products', productRoutes); // Usa as rotas de produtos com o prefixo /api/v1/products.
 
-/*  Inicia o servidor e escuta na porta definida: 
-    - Deve ser colocado após a conexão com o banco de dados, middlewares e rotas, para garantir que o servidor só inicie se
-    a conexão for bem-sucedida e tudo estiver configurado corretamente. */
+/*  
+Inicia o servidor e escuta na porta definida: 
+- Deve ser colocado após a conexão com o banco de dados, middlewares e rotas, para garantir que o servidor só inicie se
+  a conexão for bem-sucedida e tudo estiver configurado corretamente. 
+*/
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT} <- ctrl + click to open in browser!`);
 });
