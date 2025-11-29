@@ -1,28 +1,28 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import mongoose from 'mongoose';
-import { connectToDatabase } from '../config/database.js'; 
+import { connectToDatabase } from '../config/database.js';
 
 // Mocking do Mongoose
 // O Vitest usa 'vi' (equivalente a 'jest')
 vi.mock('mongoose', async () => {
-    return {
-        default: {
-  connect: vi.fn(), 
-  connection: {
-    readyState: 0,
-    on: vi.fn(),
-    once: vi.fn(),
-  },
-  Types: {
-    // Mocka a função isValid, essencial para o controller
-    ObjectId: {
-        isValid: vi.fn((id) => id !== 'invalid-id-format'),
+  return {
+    default: {
+      connect: vi.fn(),
+      connection: {
+        readyState: 0,
+        on: vi.fn(),
+        once: vi.fn(),
+      },
+      Types: {
+        // Mocka a função isValid, essencial para o controller
+        ObjectId: {
+          isValid: vi.fn((id) => id !== 'invalid-id-format'),
+        },
+      },
     },
-  },
-},
-Schema: (await vi.importActual('mongoose')).Schema,
-model: (await vi.importActual('mongoose')).model,
-    };
+    Schema: (await vi.importActual('mongoose')).Schema,
+    model: (await vi.importActual('mongoose')).model,
+  };
 });
 
 describe('Database Connection', () => {
@@ -35,7 +35,7 @@ describe('Database Connection', () => {
   // Teste 1: Conexão bem-sucedida
   it('should call mongoose.connect and log success', async () => {
     // 1. Arrange (Preparação): Define o mock para sucesso
-    (mongoose.connect as ReturnType<typeof vi.fn>).mockResolvedValue(true); 
+    (mongoose.connect as ReturnType<typeof vi.fn>).mockResolvedValue(true);
 
     // Cria um 'spy' para monitorar se console.log foi chamado
     const consoleSpy = vi.spyOn(console, 'log');
@@ -52,9 +52,9 @@ describe('Database Connection', () => {
   it('should handle connection failure and exit process', async () => {
     // 1. Arrange (Preparação): Define o mock para falha
     (mongoose.connect as ReturnType<typeof vi.fn>).mockRejectedValue(new Error('Connection failed'));
-    
+
     // Mocka o process.exit para que o Vitest não feche o terminal
-    const exitSpy = vi.spyOn(process, 'exit').mockImplementation((() => {}) as any); 
+    const exitSpy = vi.spyOn(process, 'exit').mockImplementation((() => { }) as any);
     const consoleErrorSpy = vi.spyOn(console, 'error');
 
     // 2. Act (Ação): Executa a função
@@ -62,6 +62,6 @@ describe('Database Connection', () => {
 
     // 3. Assert (Verificação):
     expect(consoleErrorSpy).toHaveBeenCalled();
-    expect(exitSpy).toHaveBeenCalledWith(1); 
+    expect(exitSpy).toHaveBeenCalledWith(1);
   });
 });
