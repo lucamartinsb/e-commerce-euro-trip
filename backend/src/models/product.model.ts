@@ -3,7 +3,7 @@ import { type IProduct } from '../interfaces/product.interface.js';
 
 // Define o schema do produto com os campos e tipos de dados necessários:
 const productSchema = new Schema<IProduct>({
-    nome: { type: String, required: true },
+    name: { type: String, required: true },
     price: { type: Number, required: true },
     description: { type: String },
     category: { type: String, required: true },

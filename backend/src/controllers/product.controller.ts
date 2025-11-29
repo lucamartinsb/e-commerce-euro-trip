@@ -35,23 +35,24 @@ const getProductByID = async (req: Request, res: Response): Promise<void> => {
 
 const createProduct = async (req: Request, res: Response): Promise<void> => {
     const { name, price, category, inStock } = req.body; // Extrai os dados do produto do corpo da requisição.
-    switch (req.body) {
-        case req.body.name === undefined || name === '' || name === null: // Verifica se o nome está presente e válido.
+    if (!name) {
             res.status(400).json({message: 'Name is required!'});
             return;
-        case req.body.price === undefined || price === 0 || price === null: // Verifica se o preço está presente e válido.
+    }
+    if (!price) {
             res.status(400).json({message: 'Price is required!'});
             return;
-        case req.body.category === undefined || category === '' || category === null: // Verifica se a categoria está presente e válida.
+    }
+    if (!category) {
             res.status(400).json({message: 'Category is required!'});
             return;
-        case req.body.inStock === undefined || inStock === null: // Verifica se o inStock está presente e válido.
+    }
+    if (inStock === undefined) {
             res.status(400).json({message: 'InStock is required!'});
             return;
     }
     try {
-        const newProduct: IProduct = new ProductModel(req.body); // Cria uma nova instância do produto com os dados da requisição.
-        const savedProduct: IProduct = await newProduct.save(); // Salva o novo produto no banco de dados.
+        const savedProduct = await ProductModel.create(req.body); // Cria e salva o novo produto no banco de dados.
         res.status(201).json(savedProduct); // Retorna o produto salvo com status 201.
     } catch (error) {
         res.status(500).json({message: 'Error creating product', error}); // Retorna erro 500 em caso de falha na criação.
