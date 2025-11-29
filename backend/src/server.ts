@@ -1,27 +1,14 @@
-import express, { type Request, type Response } from 'express'; // Importa o framework Express e os tipos Request e Response.
-import cors from 'cors'; // Importa o middleware CORS para habilitar o compartilhamento de recursos entre origens diferentes.
-import helmet from 'helmet'; // Importa o middleware Helmet para melhorar a segurança HTTP.
+// Agora o server dirá quando a aplicação começa a funcionar (porta, conexão com o DB).
+
+import app from './app.js'; // Importa o app configurado.
 import dotenv from 'dotenv'; // Importa o módulo dotenv para variáveis de ambiente.
 import { connectToDatabase } from './config/database.js'; // Importa a função para conectar ao banco de dados.
-import productRoutes from './routes/product.routes.js'; // Importa as rotas de produtos.
 
 dotenv.config(); // Carrega as variáveis de ambiente do arquivo .env
-
-const app = express(); // Cria uma instância do aplicativo Express.
-app.use(helmet()); // Usa o Helmet para definir cabeçalhos de segurança HTTP.
-app.use(cors()); // Habilita CORS para todas as rotas do servidor.
-app.use(express.json()); // Habilita o parsing de JSON no corpo das requisições HTTP.
 
 const PORT = process.env.PORT || 30000; // Define a porta do servidor a partir da variável de ambiente ou usa 30000 como padrão.
 
 connectToDatabase() // Conecta ao banco de dados antes de iniciar o servidor.
-
-// Rota inicial para verificar se o servidor está funcionando:
-app.get('/', (req: Request, res: Response) => {
-    res.status(200).send({ message: 'Welcome to the E-Commerce Euro Trip!' }); // Retorna uma mensagem de boas-vindas com status 200.
-});
-
-app.use('/api/v1/products', productRoutes); // Usa as rotas de produtos com o prefixo /api/v1/products.
 
 /*  
 Inicia o servidor e escuta na porta definida: 
