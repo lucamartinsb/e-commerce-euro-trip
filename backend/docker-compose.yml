@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  # Serviço 1: O nosso Backend (Node.js)
+  app:
+    container_name: ecommerce-backend
+    build: .  # Constrói a imagem usando o Dockerfile na pasta atual
+    ports:
+      - "30000:30000" # Mapeia a porta 30000 do container para o seu PC
+    environment:
+      - NODE_ENV=production
+      - PORT=30000
+      # AQUI ESTÁ O TRUQUE: 'mongo' é o nome do serviço abaixo (DNS interno do Docker)
+      - DB_URL=mongodb://mongo:27017/ecommerce-euro-trip 
+    depends_on:
+      - mongo # Espera o banco iniciar antes de subir o app
+    networks:
+      - app-network
+
+  # Serviço 2: O Banco de Dados (MongoDB)
+  mongo:
+    container_name: ecommerce-mongo
+    image: mongo:6.0 # Usa a imagem oficial do MongoDB
+    ports:
+      - "27017:27017" # Libera a porta para você acessar via Compass se quiser
+    volumes:
+      - mongo-data:/data/db # Persistência: salva os dados mesmo se apagar o container
+    networks:
+      - app-network
+
+# Cria uma rede privada para eles conversarem
+networks:
+  app-network:
+    driver: bridge
+
+# Cria o volume persistente
+volumes:
+  mongo-data:
