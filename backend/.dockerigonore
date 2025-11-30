@@ -1,0 +1,11 @@
+# Excluir dependências locais e cache
+node_modules
+dist
+.env
+npm-debug.log*
+
+# Excluir ferramentas e configurações de teste/git
+coverage
+.git
+.gitignore
+.vscode
