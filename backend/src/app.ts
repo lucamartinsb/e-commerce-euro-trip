@@ -11,6 +11,7 @@ const app = express();
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
+app.use('/uploads', express.static('uploads'));
 
 // Rotas da API com versionamento:
 app.use('/api/v1/products', productRoutes);

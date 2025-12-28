@@ -34,7 +34,13 @@ const getProductByID = async (req: Request, res: Response): Promise<void> => {
 };
 
 const createProduct = async (req: Request, res: Response): Promise<void> => {
+    const imageUrl = req.file ? `/uploads/${req.file.filename}` : undefined; // Pega o caminho do ficheiro que o Multer adicionou, se existir.
+    const productData = { // Certifique-se de que imageUrl está incluído no body
+        ...req.body,
+        imageUrl: imageUrl // Pode ser undefined se o ficheiro não foi enviado.
+    };
     const { name, price, category, inStock } = req.body; // Extrai os dados do produto do corpo da requisição.
+    
     if (!name) {
             res.status(400).json({message: 'Name is required!'});
             return;
@@ -52,7 +58,7 @@ const createProduct = async (req: Request, res: Response): Promise<void> => {
             return;
     }
     try {
-        const savedProduct = await ProductModel.create(req.body); // Cria e salva o novo produto no banco de dados.
+        const savedProduct = await ProductModel.create(productData); // Cria e salva o novo produto no banco de dados.
         res.status(201).json(savedProduct); // Retorna o produto salvo com status 201.
     } catch (error) {
         res.status(500).json({message: 'Error creating product', error}); // Retorna erro 500 em caso de falha na criação.
