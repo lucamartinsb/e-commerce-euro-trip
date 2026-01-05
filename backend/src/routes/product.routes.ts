@@ -6,8 +6,10 @@ const router = Router();
 
 router.get('/', productController.getAllProducts); // Rota para listar todos os produtos.
 router.get('/:id', productController.getProductByID); // Rota para listar um produto por ID.
-router.post('/', productController.createProduct); // Rota para criar um novo produto.
+
+router.post('/', uploadProductImage, productController.createProduct); // Rota para criar um produto com upload de imagem.
+
 router.patch('/:id', productController.updateProduct); // Rota para atualizar um produto por ID.
+
 router.delete('/:id', productController.deleteProduct); // Rota para deletar um produto por ID.
-router.post('/', uploadProductImage, productController.createProduct); // Rota para upload de imagem.
 export default router;
