@@ -13,7 +13,7 @@ const error = ref<string | null>(null);
 onMounted(async () => {
     try {
         // Faz a chamada ao Backend (porta 30000):
-        const response = await ApiService.GetProducts();
+        const response = await ApiService.getProducts();
         products.value = response.data;
     } catch (err) {
         console.error(err);

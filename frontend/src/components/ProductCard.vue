@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { Product } from '../types/Product';
+import { useCartStore } from '../stores/cartStore';
 
 // Definição das Props (O que este componente recebe do pai?)
 // Estamos dizendo: "Eu preciso receber um objeto 'product' obrigatoriamente"
 const props = defineProps<{
   product: Product
 }>();
+
+const cartStore = useCartStore(); // Conectando ao Pinia para adicionar ao carrinho.
 
 // Lógica Computada (Formatação de Preço)
 const formattedPrice = computed(() => {
@@ -15,24 +18,33 @@ const formattedPrice = computed(() => {
     currency: 'BRL'
   }).format(props.product.price);
 });
+
+// Função para adicionar o produto ao carrinho:
+const handleBuy = () => {
+  cartStore.addToCart(props.product);
+};
 </script>
 
 <template>
   <div class="product-card">
-    <div class="card-image">
-      <img v-if="product.imageUrl" :src="product.imageUrl" :alt="product.name" class="product-img"></img>
-      <span v-else>{{ product.name }}</span>
-    </div>
+    <RouterLink :to="`/product/${product._id}`" class="card-image-link">
+      <div class="card-image">
+        <img v-if="product.imageUrl" :src="product.imageUrl" :alt="product.name" class="product-img"></img>
+        <span v-else>{{ product.name }}</span>
+      </div>
+    </RouterLink>
 
     <div class="card-details">
-      <h2>{{ product.name }}</h2>
-      <h3 class="category">Categoria: {{ product.category }}</h3>
-      <p class="description">{{ product.description }}</p>
+      <RouterLink :to="`/product/${product._id}`" class="product-link">
+        <h3>{{ product.name }}</h3>
+      </RouterLink>
+
+      <p class="category">Categoria: {{ product.category }}</p>
 
       <div class="card-footer">
         <span class="price">{{ formattedPrice }}</span>
 
-        <button :disabled="!product.inStock" class="buy-btn">
+        <button @click="handleBuy" :disabled="!product.inStock" class="buy-btn">
           {{ product.inStock ? 'Comprar' : 'Esgotado' }}
         </button>
       </div>
@@ -43,8 +55,9 @@ const formattedPrice = computed(() => {
 <style scoped>
 .product-card {
   box-sizing: border-box;
-  border: 0.1rem solid #e0e0e0;
-  border-radius: 0.8rem;
+  /* border: 0.1rem solid #e0e0e0; */
+  box-shadow: #ffffff 0 0 5px;
+  border-radius: 1.2rem;
   overflow: hidden;
   background-color: var(--color-background); /* Usa a cor do tema (Light/Dark) */
   transition: transform 0.2s;
@@ -58,7 +71,8 @@ const formattedPrice = computed(() => {
 
 .product-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.1); */
+  box-shadow: #ffffff 0 0 10px;
 }
 
 .card-image {
@@ -69,6 +83,7 @@ const formattedPrice = computed(() => {
   justify-content: center;
   color: #ccc;
   overflow: hidden;
+  box-shadow: #ffffff 0 0 5px;
 }
 
 .product-img {
@@ -77,41 +92,51 @@ const formattedPrice = computed(() => {
   object-fit: cover; /* Ajusta a imagem para cobrir a área sem distorcer */
 }
 
+.product-link{
+  text-transform: capitalize;
+  text-decoration: none;
+  color: inherit;
+  height: 4.5rem
+}
+
 .card-details {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   gap: 0.8rem;
 }
 
 .category {
-  color: #888;
-  text-transform: capitalize;
+  color: #cec1c1;
+  text-transform: uppercase;
 }
 
 .card-footer {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
-  padding: 0.8rem 0;
+  /* padding: 0.8rem 0; */
 }
 
 .price {
-  color: #249a65;
+  color: #d8d405;
 }
 
 .buy-btn {
-  background-color: #42b883; 
+  background-color: #42b883;
   color: white;
   border: none;
   padding: 0.8rem 1.6rem;
-  border-radius: 4px;
+  border-radius: 0.6rem;
   cursor: pointer;
-  font-weight: bold
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 .buy-btn:disabled {
-  background-color: #ccc;
+  background-color: #f46c6c;
   cursor: not-allowed;
+  box-shadow: none;
 }
 
 .buy-btn:hover:not(:disabled) {
