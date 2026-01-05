@@ -36,10 +36,10 @@ const handleBuy = () => {
         <div v-else-if="product" class="product-detail">
             <div class="image-section">
                 <img v-if="product.imageUrl" :src="product.imageUrl" :alt="product.name" />
-                <div v-else class="placeholder">{{ product.name }}</div>
+                <div v-else class="no-image">{{ "Imagem Indisponível" }}</div>
             </div>
             <div class="info-section">
-                <h1>{{ product.name }}</h1>
+                <h1 class="name">{{ product.name }}</h1>
                 <p class="category">Categoria: {{ product.category }}</p>
                 <h3 class="description">{{ product.description }}</h3>
                 <p class="price">
@@ -55,38 +55,49 @@ const handleBuy = () => {
 </template>
 <style scoped>
 .container {
-    max-width: 90vw;
+    max-width: 70vw;
     margin: 2rem auto;
 }
 
 .product-detail {
     display: flex;
-    flex-direction: column;
-    gap: 2rem;
+    flex-direction: row;
+    padding: 1.6rem;
+    flex-wrap: wrap;
+    gap: 1.6rem;
+    border: #42b883 1px solid;
 }
 
-.image-section img {
-    /* width: 70%; */
-    border-radius: 8px;
-}
-
-.placeholder {
-    width: 100%;
-    height: 400px;
-    background: #eee;
+.image-section {
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 5rem;
-    color: #ccc;
+}
+
+.image-section img {
+    max-width: 40vw;
+    height: auto;
+    border-radius: 8px;
 }
 
 .info-section {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    /* width: 50%; */
+    justify-content: space-between;
     text-align: justify;
+}
+
+.no-image {
+    width: 40vw;
+    height: 25vw;
+    background: #eee;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bolder;
+    color: #ccc;
+    border-radius: 8px;
 }
 
 .category {
@@ -108,7 +119,6 @@ const handleBuy = () => {
     font-size: 1.6rem;
     cursor: pointer;
     border-radius: 8px;
-    margin-top: 1rem;
 }
 
 .buy-btn:disabled {

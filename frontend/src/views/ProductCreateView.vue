@@ -49,27 +49,27 @@ const submitForm = async () => {
         <h1>Novo Produto</h1>
         <form @submit.prevent="submitForm" class="product-form">
             <div class="form-group">
-                <label>Nome do Produto</label>
+                <label>Nome do Produto:</label>
                 <input v-model="name" type="text" required />
             </div>
 
             <div class="form-group">
-                <label>Preço (R$)</label>
+                <label>Preço (R$):</label>
                 <input v-model.number="price" type="number" step="0.01" required />
             </div>
 
             <div class="form-group">
-                <label>Categoria</label>
+                <label>Categoria:</label>
                 <input v-model="category" type="text" required />
             </div>
 
             <div class="form-group">
-                <label>Descrição</label>
+                <label>Descrição:</label>
                 <textarea v-model="description"></textarea>
             </div>
 
             <div class="form-group">
-                <label>Imagem</label>
+                <label>Imagem:</label>
                 <input type="file" @change="handleFileUpload" accept="image/*" />
             </div>
 
@@ -96,11 +96,13 @@ const submitForm = async () => {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    margin-top: 1.4rem;
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
+    margin: 0.4rem 0;
     gap: 0.5rem;
 }
 
@@ -111,8 +113,13 @@ textarea {
     border: 1px solid #444;
     color: white;
     border-radius: 4px;
+    letter-spacing: 0.3rem;
 }
-
+label {
+    font-weight: bold;
+    color: #eee;
+    letter-spacing: 0.2rem;
+}
 .checkbox {
     flex-direction: row;
     align-items: center;

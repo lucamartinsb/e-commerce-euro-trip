@@ -40,7 +40,7 @@ const formattedTotal = (val: number) => new Intl.NumberFormat('pt-BR', {
 
 <style scoped>
 .cart-container {
-    max-width: 80%;
+    max-width: 85%;
     margin: 1.6rem auto;
 }
 
@@ -56,10 +56,10 @@ const formattedTotal = (val: number) => new Intl.NumberFormat('pt-BR', {
 
 .cart-item {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 1.6rem;
-    margin: 1.6rem 0;
+    gap: 1rem;
+    margin: 1.6rem auto;
+    padding: 0 1rem;
     border: 0.2rem solid #333;
     border-radius: 0.8rem;
 }

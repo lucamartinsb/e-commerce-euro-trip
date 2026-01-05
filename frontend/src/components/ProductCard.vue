@@ -30,7 +30,7 @@ const handleBuy = () => {
     <RouterLink :to="`/product/${product._id}`" class="card-image-link">
       <div class="card-image">
         <img v-if="product.imageUrl" :src="product.imageUrl" :alt="product.name" class="product-img"></img>
-        <span v-else>{{ product.name }}</span>
+        <div class="no-image" v-else>{{ "Imagem indisponível" }}</div>
       </div>
     </RouterLink>
 
@@ -63,7 +63,6 @@ const handleBuy = () => {
   transition: transform 0.2s;
   display: flex;
   flex-direction: column;
-  align-items: center;
   text-align: justify;
   padding: 0.8rem;
   gap: 1.6rem;
@@ -90,6 +89,18 @@ const handleBuy = () => {
   width: 100%;
   height: auto;
   object-fit: cover; /* Ajusta a imagem para cobrir a área sem distorcer */
+}
+
+.no-image {
+  padding: 7.1rem 8.1rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  color: #000000;
+  background-color: #ccc;
+  width: 100%;
+  height: auto;
 }
 
 .product-link{
