@@ -8,6 +8,7 @@ const productSchema = new Schema<IProduct>({
     description: { type: String },
     category: { type: String, required: true },
     inStock: { type: Boolean, required: true, default: true },
+    imageUrl: { type: String }
 }, {
     timestamps: true, // Adiciona automaticamente os campos createdAt e updatedAt.
     collection: 'products' // Define o nome da coleção no MongoDB.
